@@ -46,9 +46,9 @@ namespace API_2
         }
 
 
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, string includeProperties)
+        public IEnumerable<TEntity> GetAll()
         {
-            return _repository.GetAll(filter, orderBy, includeProperties);
+            return _repository.GetAll();
         }
 
         public TEntity GetByID(object id)

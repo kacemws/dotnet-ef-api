@@ -28,9 +28,12 @@ namespace API_2
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(AppDbContext));
+            services.AddTransient(typeof(ICRUDService<>), typeof(CRUDService<>));
             services.AddTransient(typeof(ICRUDRepository<>), typeof(CRUDRepository<>));
+            services.AddTransient<IQuizService, QuizService>();
             services.AddTransient<IQuizRepository, QuizRepository>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
