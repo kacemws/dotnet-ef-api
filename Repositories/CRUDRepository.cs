@@ -28,9 +28,12 @@ namespace API_2
 
         public virtual TEntity GetByID(object id)
         {
-            return dbSet.Find(id);
+            var entity = dbSet.Find(id);
+            context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
+        
         public virtual void Create(TEntity entity)
         {
             dbSet.Add(entity);
@@ -53,7 +56,8 @@ namespace API_2
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            context.Update(entityToUpdate);
+            dbSet.Attach(entityToUpdate);
+            dbSet.Update(entityToUpdate);
         }
 
         public void Save()
