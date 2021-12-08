@@ -37,5 +37,69 @@ namespace API_2
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetQuizById(Guid id)
+        {
+            try
+            {
+                var quiz = _quizService.GetByID(id);
+                if (quiz == null) return NotFound();
+                return Ok(quiz);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult PostQuiz(Quiz quiz)
+        {
+            try
+            {
+                _quizService.Create(quiz);
+                return Created("",quiz);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteQuiz(Guid id)
+        {
+            try
+            {
+                var quiz = _quizService.GetByID(id);
+                if (quiz == null) return NotFound();
+                _quizService.Delete(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateQuiz(Guid id, Quiz updatedQuiz)
+        {
+            try
+            {
+                var quiz = _quizService.GetByID(id);
+                if (quiz == null) return NotFound();
+                _quizService.Update(updatedQuiz);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

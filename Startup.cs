@@ -29,7 +29,10 @@ namespace API_2
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(AppDbContext));
+            string connectionString =Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(options=> {
+                options.UseSqlServer(connectionString);
+            });
             services.AddTransient(typeof(ICRUDService<>), typeof(CRUDService<>));
             services.AddTransient(typeof(ICRUDRepository<>), typeof(CRUDRepository<>));
             services.AddTransient<IQuizService, QuizService>();

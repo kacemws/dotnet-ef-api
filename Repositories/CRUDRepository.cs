@@ -53,8 +53,7 @@ namespace API_2
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            dbSet.Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
+            context.Update(entityToUpdate);
         }
 
         public void Save()
