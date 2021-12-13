@@ -34,11 +34,24 @@ namespace API_2
         }
 
         [HttpGet]
-        public IActionResult GetAllQuizzes()
+        public IActionResult GetAllQuizzes(int? type)
         {
             try
             {
-                var quizzes = _quizService.GetAll();
+                int? filter = type;
+                Console.WriteLine(type);
+                IEnumerable<Quiz> quizzes = new List<Quiz>();
+
+                if (filter == null)
+                {
+                    quizzes = _quizService.GetAll();
+
+                }else 
+                {
+                    if (filter > 2 || filter < 0) filter = 1;
+                    quizzes = _quizService.GetFiltered((int)filter);
+                }
+                
                 if (quizzes == null) return NotFound();
                 return Ok(quizzes);
             }
@@ -55,7 +68,8 @@ namespace API_2
             {
                 var quiz = _quizService.GetByID(id);
                 if (quiz == null) return NotFound();
-                return Ok(quiz);
+                QuizQuestions questions = quiz.quizQuestions;
+                return Ok(questions);
             }
             catch (Exception)
             {
@@ -70,8 +84,9 @@ namespace API_2
             {
                 var existing = _quizService.GetByName(quiz.name);
                 if (existing != null) throw new Exception("quiz with the same name already exists");
+
+
                 _quizService.Create(quiz);
-                Console.WriteLine(quiz?.quizQuestions);
                 return Created("",quiz);
             }
             catch (Exception exception)
@@ -87,9 +102,17 @@ namespace API_2
             try
             {
                 var quiz = _quizService.GetByID(id);
+
                 if (quiz == null) return NotFound();
+
                 if (quiz.password != password) throw new Exception("passwords aren't matching");
-                _quizService.Delete(id);
+
+                // instead of deleting the entity, we would rather archive it, so that we can recover it at any given time
+
+                quiz.state = QuizState.ARCHIVED;
+
+                _quizService.Update(quiz);
+
                 return Ok();
             }
             catch (Exception exception)
@@ -106,9 +129,13 @@ namespace API_2
             try
             {
                 var quiz = _quizService.GetByID(id);
+
                 if (quiz == null) return NotFound();
+
                 if (quiz.password != updatedQuiz.password) throw new Exception("passwords aren't matching");
+
                 if (quiz.state != QuizState.DRAFT) throw new Exception("can't edit the quiz, it's already published");
+
                 _quizService.Update(updatedQuiz);
                 return Ok();
             }

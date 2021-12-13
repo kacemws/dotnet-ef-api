@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API_2
@@ -18,6 +19,11 @@ namespace API_2
         {
             return _quizRepository.GetByName(name);
 
+        }
+
+        public IEnumerable<Quiz> GetFiltered(int type)
+        {
+            return _quizRepository.GetFiltered(type);
         }
     }
 }

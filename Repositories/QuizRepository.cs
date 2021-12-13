@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,20 @@ namespace API_2
                 return null;
             }
             
+        }
+
+        public IEnumerable<Quiz> GetFiltered(int type)
+        {
+            QuizState[] states = { QuizState.DRAFT, QuizState.PUBLISHED, QuizState.ARCHIVED };
+            try
+            {
+                var quizzes = dbSet.Where(qz => qz.state == states[type]);
+                return quizzes;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
