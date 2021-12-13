@@ -163,7 +163,62 @@ namespace API_2
             }
         }
 
+        //------------------------
+        [HttpGet("quiz-states")]
+        public IActionResult GetQuizStates()
+        {
+            try
+            {
+                Dictionary<QuizState, int> states = new Dictionary<QuizState, int>();
 
+                states.Add(QuizState.DRAFT, 0);
+                states.Add(QuizState.PUBLISHED, 1);
+                states.Add(QuizState.ARCHIVED, 2);
 
+                return Ok(states);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("question-types")]
+        public IActionResult GetQuestionType()
+        {
+            try
+            {
+                Dictionary<QuestionType, int> types = new Dictionary<QuestionType, int>();
+
+                types.Add(QuestionType.INPUT, 0);
+                types.Add(QuestionType.SINGLE, 1);
+                types.Add(QuestionType.MULTI, 2);
+
+                return Ok(types);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("difficulties")]
+        public IActionResult GetDifficulties()
+        {
+            try
+            {
+                Dictionary<Difficulty, int > difficulties = new Dictionary<Difficulty, int>();
+
+                difficulties.Add(Difficulty.EASY, 0);
+                difficulties.Add(Difficulty.MEDIUM,1);
+                difficulties.Add(Difficulty.HARD,2);
+
+                return Ok(difficulties);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
