@@ -1,30 +1,62 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace API_2
 {
     public class Quiz : EntityWithId
     {
         //name of the quiz
+        [Required]
         public string name
         {
             get;
             set;
         }
 
+        // password to protect the edition of the quiz
+        [Required]
+        public string password
+        {
+            get;
+            set;
+        }
+
+        // state of the quiz
+        public QuizState? state
+        {
+            get;
+            set;
+        }
+
         //overall rating, ex : 289
-        public int rating
+        public int? rating
+        {
+            get;
+            set;
+        }
+
+        // number of people who voted for this quiz
+        public int? numberOfVotes
         {
             get;
             set;
         }
 
         // number of people who played the quiz
-        public int numberOfPlays
+        public int? numberOfPlays
         {
             get;
             set;
         }
 
-        public Difficulty difficulty
+        public Difficulty? difficulty
+        {
+            get;
+            set;
+        }
+
+
+        public QuizQuestions quizQuestions
         {
             get;
             set;
@@ -39,7 +71,7 @@ namespace API_2
         public double getRating()
         {
             if (this.numberOfPlays == 0) return 0;
-            return this.rating / this.numberOfPlays;
+            return (double)(this.rating / this.numberOfVotes);
         }
     }
 }
