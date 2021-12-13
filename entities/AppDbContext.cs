@@ -16,12 +16,15 @@ namespace API_2
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             /* Keys */
 
-            modelBuilder.Entity<QuizQuestions>()
-                .HasOne(qst => qst.Quiz)
-                .WithOne(qz => qz.quizQuestions)
-                .HasForeignKey<QuizQuestions>(qst => qst.quizId);
+            modelBuilder.Entity<Quiz>()
+                .HasOne(qz => qz.quizQuestions)
+                .WithOne(qst => qst.Quiz)
+                .HasForeignKey<QuizQuestions>(qst => qst.quizId)
+                .OnDelete(DeleteBehavior.ClientCascade);
             //.IsRequired();
 
             

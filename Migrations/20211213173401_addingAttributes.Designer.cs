@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211213141835_addingQuestionContent")]
-    partial class addingQuestionContent
+    [Migration("20211213173401_addingAttributes")]
+    partial class addingAttributes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,9 +116,6 @@ namespace API_2.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("QuizRef")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("quizId")

@@ -27,12 +27,20 @@ namespace API_2
 
         public void Delete(object entityID)
         {
-            if (entityID == null || entityID == "")
+            try
             {
-                throw new ArgumentNullException("entity");
+                if (entityID == null || entityID == "")
+                {
+                    throw new ArgumentNullException("entity");
+                }
+                _repository.Delete(entityID);
+                _unitOfWork.Commit();
             }
-            _repository.Delete(entityID);
-            _unitOfWork.Commit();
+            catch (Exception exception) {
+                Console.WriteLine(exception.Message);
+                throw new Exception(exception.Message);
+            }
+            
         }
 
         public void Delete(TEntity entityToDelete)

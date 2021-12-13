@@ -7,14 +7,14 @@ namespace API_2
 {
     public class QuizQuestions : EntityWithId
     {
+        
         public Guid quizId
         {
             get;
             set;
         }
 
-        [ForeignKey("QuizRef")]
-        public Quiz Quiz
+        public virtual Quiz Quiz
         {
             get;
             set;

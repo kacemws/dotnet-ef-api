@@ -116,9 +116,6 @@ namespace API_2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("QuizRef")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("quizId")
                         .HasColumnType("uniqueidentifier");
 
@@ -149,7 +146,7 @@ namespace API_2.Migrations
                     b.HasOne("API_2.Quiz", "Quiz")
                         .WithOne("quizQuestions")
                         .HasForeignKey("API_2.QuizQuestions", "quizId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Quiz");

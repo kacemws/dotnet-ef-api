@@ -82,12 +82,13 @@ namespace API_2
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteQuiz(Guid id)
+        public IActionResult DeleteQuiz(Guid id, string password)
         {
             try
             {
                 var quiz = _quizService.GetByID(id);
                 if (quiz == null) return NotFound();
+                if (quiz.password != password) throw new Exception("passwords aren't matching");
                 _quizService.Delete(id);
                 return Ok();
             }
@@ -105,9 +106,28 @@ namespace API_2
             try
             {
                 var quiz = _quizService.GetByID(id);
-                Console.WriteLine(quiz);
                 if (quiz == null) return NotFound();
+                if (quiz.password != updatedQuiz.password) throw new Exception("passwords aren't matching");
+                if (quiz.state != QuizState.DRAFT) throw new Exception("can't edit the quiz, it's already published");
                 _quizService.Update(updatedQuiz);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+
+        [HttpPut("{orderId}/get-questions/{id}")]
+        public IActionResult UpdateQuizQuestions(Guid id, Quiz updatedQuiz)
+        {
+            try
+            {
+                //var quiz = _quizService.GetByID(id);
+                //Console.WriteLine(quiz);
+                //if (quiz == null) return NotFound();
+                //_quizService.Update(updatedQuiz);
                 return Ok();
             }
             catch (Exception)

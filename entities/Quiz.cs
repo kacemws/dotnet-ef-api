@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_2
 {
-    [Index(nameof(name), IsUnique = true)]
+    //[Index(nameof(name), IsUnique = true)]
     public class Quiz : EntityWithId
     {
         //name of the quiz
