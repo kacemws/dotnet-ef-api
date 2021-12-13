@@ -13,5 +13,11 @@ namespace API_2
             _unitOfWork = unitOfWork;
             _quizRepository = quizRepository;
         }
+
+        public Quiz GetByName(string name)
+        {
+            return _quizRepository.GetByName(name);
+
+        }
     }
 }

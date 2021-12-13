@@ -5,9 +5,8 @@ using System.Linq.Expressions;
 
 namespace API_2
 {
-    public interface IQuizService : ICRUDService<Quiz>
+    public interface IQuizQuestionsService : ICRUDService<QuizQuestions>
     {
-        Quiz GetByName(string name);
-
+        
     }
 }

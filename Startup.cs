@@ -26,7 +26,9 @@ namespace API_2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             string connectionString =Configuration.GetConnectionString("DefaultConnection");
@@ -37,6 +39,15 @@ namespace API_2
             services.AddTransient(typeof(ICRUDRepository<>), typeof(CRUDRepository<>));
             services.AddTransient<IQuizService, QuizService>();
             services.AddTransient<IQuizRepository, QuizRepository>();
+
+            services.AddTransient<IQuizQuestionsService, QuizQuestionsService>();
+            services.AddTransient<IQuizQuestionsRepository, QuizQuestionsRepository>();
+
+            services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+
+            services.AddTransient<IAnswerService, AnswerService>();
+            services.AddTransient<IAnswerRepository, AnswerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -21,6 +21,7 @@
     <None Remove="Repositories\" />
     <None Remove="Services\" />
     <None Remove="Migrations\" />
+    <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -40,6 +41,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="entities\" />

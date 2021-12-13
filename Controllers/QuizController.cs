@@ -8,18 +8,29 @@ using Microsoft.Extensions.Logging;
 namespace API_2
 {
     [ApiController]
-    [Route("/api/v1/[controller]")]
+    [Route("/api/v1/quizzes")]
     public class QuizController : ControllerBase
     {
         
         private readonly ILogger<QuizController> _logger;
         IQuizService _quizService;
-        
+        IQuizQuestionsService _quizQuestionsService;
+        IQuestionService _questionService;
+        IAnswerService _answerService;
 
-        public QuizController(ILogger<QuizController> logger, IQuizService quizService )
-        {
+
+        public QuizController(
+            ILogger<QuizController> logger,
+            IQuizService quizService,
+            IQuizQuestionsService quizQuestionsService,
+            IQuestionService questionService,
+            IAnswerService answerService
+        ){
             _logger = logger;
             _quizService = quizService;
+            _quizQuestionsService = quizQuestionsService;
+            _questionService = questionService;
+            _answerService = answerService;
         }
 
         [HttpGet]
@@ -57,12 +68,15 @@ namespace API_2
         {
             try
             {
+                var existing = _quizService.GetByName(quiz.name);
+                if (existing != null) throw new Exception("quiz with the same name already exists");
                 _quizService.Create(quiz);
+                Console.WriteLine(quiz?.quizQuestions);
                 return Created("",quiz);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
@@ -77,9 +91,9 @@ namespace API_2
                 _quizService.Delete(id);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
@@ -91,6 +105,7 @@ namespace API_2
             try
             {
                 var quiz = _quizService.GetByID(id);
+                Console.WriteLine(quiz);
                 if (quiz == null) return NotFound();
                 _quizService.Update(updatedQuiz);
                 return Ok();
@@ -100,6 +115,8 @@ namespace API_2
                 return BadRequest();
             }
         }
+
+
 
     }
 }

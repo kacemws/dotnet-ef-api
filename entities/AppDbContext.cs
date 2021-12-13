@@ -72,6 +72,11 @@ namespace API_2
                 .HasDefaultValue(false);
 
             /* Default values */
+
+
+            /* Constraints */       
+
+            /* Constraints */
         }
 
     }

@@ -168,3 +168,6 @@
 /Users/belkacem/Projects/API-2/API-2/obj/Debug/net5.0/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
 /Users/belkacem/Projects/API-2/API-2/obj/Debug/net5.0/API-2.RazorTargetAssemblyInfo.cs
 /Users/belkacem/Projects/API-2/API-2/obj/Debug/net5.0/API-2.Views.pdb
+/Users/belkacem/Projects/API-2/API-2/bin/Debug/net5.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/belkacem/Projects/API-2/API-2/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/belkacem/Projects/API-2/API-2/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll

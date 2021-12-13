@@ -6,6 +6,12 @@ namespace API_2
 {
     public class Question : EntityWithId
     {
+        public string content
+        {
+            get;
+            set;
+        }
+
         public QuestionType type
         {
             get;
