@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_2
@@ -10,6 +11,19 @@ namespace API_2
         {
             
         }
-        
+
+        public QuizQuestions GetQuizQuestionsByQuiz(Guid id)
+        {
+            
+            try
+            {
+                var quizQuestions = dbSet.Where(qz => qz.quizId == id).First();
+                return quizQuestions;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

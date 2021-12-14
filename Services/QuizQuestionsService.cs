@@ -14,5 +14,9 @@ namespace API_2
             _quizQuestionsRepository = quizQuestionsRepository;
         }
 
+        public QuizQuestions GetQuizQuestionsByQuiz(Guid id)
+        {
+            return _quizQuestionsRepository.GetQuizQuestionsByQuiz(id);
+        }
     }
 }

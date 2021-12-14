@@ -7,6 +7,6 @@ namespace API_2
 {
     public interface IQuizQuestionsService : ICRUDService<QuizQuestions>
     {
-        
+        QuizQuestions GetQuizQuestionsByQuiz(Guid id);
     }
 }

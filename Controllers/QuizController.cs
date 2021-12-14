@@ -42,16 +42,19 @@ namespace API_2
                 Console.WriteLine(type);
                 IEnumerable<Quiz> quizzes = new List<Quiz>();
 
+                // if no filter passed, get all quizzes
                 if (filter == null)
                 {
                     quizzes = _quizService.GetAll();
 
                 }else 
                 {
+                    // if out of range, return only public
                     if (filter > 2 || filter < 0) filter = 1;
                     quizzes = _quizService.GetFiltered((int)filter);
                 }
-                
+
+                // none were found
                 if (quizzes == null) return NotFound();
                 return Ok(quizzes);
             }
@@ -62,18 +65,29 @@ namespace API_2
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetQuizById(Guid id)
+        public IActionResult GetQuizById(Guid id, string? password)
         {
             try
             {
                 var quiz = _quizService.GetByID(id);
+
+                // if no quiz was found
                 if (quiz == null) return NotFound();
-                QuizQuestions questions = quiz.quizQuestions;
-                return Ok(questions);
+
+                // if found, but still in draft, only owner can access (hense, the password comparaison)
+                if(quiz.state == QuizState.DRAFT && quiz.password != password)
+                {
+                    return Unauthorized();
+                }
+
+                // if draft and visited by admin, or public, get all questions and answer, player 1 ready to play
+                QuizQuestions quizQuestions = _quizQuestionsService.GetQuizQuestionsByQuiz(id);
+                quiz.quizQuestions = quizQuestions;
+                return Ok(quiz);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
@@ -83,6 +97,8 @@ namespace API_2
             try
             {
                 var existing = _quizService.GetByName(quiz.name);
+
+                // if a quiz by the same name exist, raise an exception
                 if (existing != null) throw new Exception("quiz with the same name already exists");
 
 
@@ -105,10 +121,10 @@ namespace API_2
 
                 if (quiz == null) return NotFound();
 
-                if (quiz.password != password) throw new Exception("passwords aren't matching");
+                // before deleting, we should check that's its an admin doing it
+                if (quiz.password != password) return Unauthorized();
 
                 // instead of deleting the entity, we would rather archive it, so that we can recover it at any given time
-
                 quiz.state = QuizState.ARCHIVED;
 
                 _quizService.Update(quiz);
@@ -132,8 +148,10 @@ namespace API_2
 
                 if (quiz == null) return NotFound();
 
-                if (quiz.password != updatedQuiz.password) throw new Exception("passwords aren't matching");
+                // check that an admin is doing the update
+                if (quiz.password != updatedQuiz.password) return Unauthorized();
 
+                // no update while published 
                 if (quiz.state != QuizState.DRAFT) throw new Exception("can't edit the quiz, it's already published");
 
                 _quizService.Update(updatedQuiz);
@@ -146,22 +164,22 @@ namespace API_2
         }
 
 
-        [HttpPut("{orderId}/get-questions/{id}")]
-        public IActionResult UpdateQuizQuestions(Guid id, Quiz updatedQuiz)
-        {
-            try
-            {
-                //var quiz = _quizService.GetByID(id);
-                //Console.WriteLine(quiz);
-                //if (quiz == null) return NotFound();
-                //_quizService.Update(updatedQuiz);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        //[HttpPut("{orderId}/get-questions/{id}")]
+        //public IActionResult UpdateQuizQuestions(Guid id, Quiz updatedQuiz)
+        //{
+        //    try
+        //    {
+        //        //var quiz = _quizService.GetByID(id);
+        //        //Console.WriteLine(quiz);
+        //        //if (quiz == null) return NotFound();
+        //        //_quizService.Update(updatedQuiz);
+        //        return Ok();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
 
         //------------------------
         [HttpGet("quiz-states")]
