@@ -17,6 +17,7 @@ namespace API_2
         {
             try
             {
+                // first or default
                 var entity = dbSet.Where(qz => qz.name == name).First();
                 context.Entry(entity).State = EntityState.Detached;
                 return entity;
