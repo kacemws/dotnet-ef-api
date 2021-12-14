@@ -27,7 +27,17 @@ namespace API_2
                 .OnDelete(DeleteBehavior.ClientCascade);
             //.IsRequired();
 
-            
+            modelBuilder.Entity<QuizQuestions>()
+                .HasMany(qz => qz.questions)
+                .WithOne(qst => qst.QuizQuestions)
+                .HasForeignKey(qst => qst.quizQuestionsId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Question>()
+                .HasMany(qst => qst.answers)
+                .WithOne(answ => answ.Question)
+                .HasForeignKey(answ => answ.questionId)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             /* Keys */
 

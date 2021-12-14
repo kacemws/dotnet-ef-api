@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API_2
@@ -12,6 +13,11 @@ namespace API_2
         {
             _unitOfWork = unitOfWork;
             _questionRepository = questionRepository;
+        }
+
+        public IEnumerable<Question> GetQuestionsByQuiz(Guid id)
+        {
+            return _questionRepository.GetQuestionsByQuiz(id);
         }
     }
 }

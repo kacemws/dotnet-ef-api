@@ -6,6 +6,18 @@ namespace API_2
 {
     public class Question : EntityWithId
     {
+        public Guid quizQuestionsId
+        {
+            get;
+            set;
+        }
+
+        public virtual QuizQuestions QuizQuestions
+        {
+            get;
+            set;
+        }
+
         public string content
         {
             get;

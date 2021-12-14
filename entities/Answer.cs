@@ -6,6 +6,19 @@ namespace API_2
     
     public class Answer : EntityWithId
     {
+        public Guid questionId
+        {
+            get;
+            set;
+        }
+
+        public virtual Question Question
+        {
+            get;
+            set;
+        }
+
+
         // the answer suggestion itSelf
         public string content
         {

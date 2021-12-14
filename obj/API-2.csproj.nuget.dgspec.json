@@ -14,7 +14,7 @@
         "outputPath": "/Users/belkacem/Projects/API-2/API-2/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/belkacem/.config/NuGet/NuGet.Config"
+          "/Users/belkacem/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

@@ -7,7 +7,6 @@ namespace API_2
 {
     public interface IAnswerService : ICRUDService<Answer>
     {
-
-
+        public IEnumerable<Answer> GetAnswersByQuestion(Guid id);
     }
 }

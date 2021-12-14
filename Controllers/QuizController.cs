@@ -82,7 +82,23 @@ namespace API_2
 
                 // if draft and visited by admin, or public, get all questions and answer, player 1 ready to play
                 QuizQuestions quizQuestions = _quizQuestionsService.GetQuizQuestionsByQuiz(id);
+               
                 quiz.quizQuestions = quizQuestions;
+
+                if (quizQuestions != null) {
+                    ICollection<Question> questions = (ICollection<Question>) _questionService.GetQuestionsByQuiz(quizQuestions.Id);
+                    
+                    if (questions != null && questions.Count > 0)
+                    {
+                        foreach(Question question in questions)
+                        {
+                            question.answers = (ICollection<Answer>)_answerService.GetAnswersByQuestion(question.Id);
+                        }
+                    }
+                    quiz.quizQuestions.questions = questions;
+                }
+
+
                 return Ok(quiz);
             }
             catch (Exception exception)

@@ -4,14 +4,16 @@ using API_2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API_2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211214164651_addingForeignKeys")]
+    partial class addingForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,11 +27,11 @@ namespace API_2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("content")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("questionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("valid")
                         .ValueGeneratedOnAdd()
@@ -38,7 +40,7 @@ namespace API_2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("questionId");
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -129,13 +131,9 @@ namespace API_2.Migrations
 
             modelBuilder.Entity("API_2.Answer", b =>
                 {
-                    b.HasOne("API_2.Question", "Question")
+                    b.HasOne("API_2.Question", null)
                         .WithMany("answers")
-                        .HasForeignKey("questionId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
+                        .HasForeignKey("QuestionId");
                 });
 
             modelBuilder.Entity("API_2.Question", b =>
