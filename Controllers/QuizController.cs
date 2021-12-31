@@ -34,33 +34,39 @@ namespace API_2
         }
 
         [HttpGet]
-        public IActionResult GetAllQuizzes(int? type)
+        public IActionResult GetAllQuizzes(int? type, int? page = 1, int? size = 10)
         {
             try
             {
                 int? filter = type;
-                Console.WriteLine(type);
-                IEnumerable<Quiz> quizzes = new List<Quiz>();
+                
+                IDictionary<string, Object> pageable = new Dictionary<string, Object>();
 
+                //pagination check
+                if (page < 1) page = 1;
+                if (size <= 0) size = 10;
+
+                Console.WriteLine(type);
                 // if no filter passed, get all quizzes
                 if (filter == null)
                 {
-                    quizzes = _quizService.GetAll();
-
-                }else 
+                    pageable = _quizService.GetAllPaginated((int)page, (int)size);
+                }
+                else 
                 {
                     // if out of range, return only public
                     if (filter > 2 || filter < 0) filter = 1;
-                    quizzes = _quizService.GetFiltered((int)filter);
-                }
 
+                    pageable = _quizService.GetFiltered((int)filter, (int)page, (int)size);
+                }
+ 
                 // none were found
-                if (quizzes == null) return NotFound();
-                return Ok(quizzes);
+                if ((pageable["items"] as IEnumerable<Quiz>).Count() == 0) return NoContent();
+                return Ok(pageable);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

@@ -7,7 +7,10 @@ namespace API_2
 {
     public interface IQuizService : ICRUDService<Quiz>
     {
+        
+        IDictionary<string, Object> GetAllPaginated(int page, int size);
+
         Quiz GetByName(string name);
-        IEnumerable<Quiz> GetFiltered(int type);
+        IDictionary<string, Object> GetFiltered(int type, int page, int size);
     }
 }

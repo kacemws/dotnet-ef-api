@@ -21,9 +21,14 @@ namespace API_2
 
         }
 
-        public IEnumerable<Quiz> GetFiltered(int type)
+        public IDictionary<string, Object> GetAllPaginated(int page, int size)
         {
-            return _quizRepository.GetFiltered(type);
+            return _quizRepository.GetAllPaginated(page, size);
+        }
+
+        public IDictionary<string, Object> GetFiltered(int type, int page, int size)
+        {
+            return _quizRepository.GetFiltered(type, page, size);
         }
     }
 }

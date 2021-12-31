@@ -29,13 +29,41 @@ namespace API_2
             
         }
 
-        public IEnumerable<Quiz> GetFiltered(int type)
+        public IDictionary<string, Object> GetAllPaginated(int page, int size)
+        {
+            try
+            {
+                
+                var quizzes = dbSet.OrderBy(qz=>qz.Id).Skip((page - 1) * size).Take(size).ToList();
+                var count = dbSet.Count();
+                IDictionary<string, Object> pageable = new Dictionary<string, Object>();
+
+                pageable.Add("items", quizzes);
+                pageable.Add("count", count);
+
+                return pageable;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+        public IDictionary<string, Object> GetFiltered(int type, int page, int size)
         {
             QuizState[] states = { QuizState.DRAFT, QuizState.PUBLISHED, QuizState.ARCHIVED };
             try
             {
-                var quizzes = dbSet.Where(qz => qz.state == states[type]);
-                return quizzes;
+                var quizzes = dbSet.Where(qz => qz.state == states[type]).OrderBy(qz => qz.Id).Skip((page-1) * size).Take(size).ToList();
+                var count = dbSet.Where(qz => qz.state == states[type]).Count();
+
+                IDictionary<string, Object> pageable = new Dictionary<string, Object>();
+
+                pageable.Add("items", quizzes);
+                pageable.Add("count", count);
+
+                return pageable;
             }
             catch (Exception)
             {

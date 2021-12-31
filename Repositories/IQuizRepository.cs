@@ -6,6 +6,7 @@ namespace API_2
     public interface IQuizRepository : ICRUDRepository<Quiz>
     {
         Quiz GetByName(string name);
-        IEnumerable<Quiz> GetFiltered(int type);
+        IDictionary<string, Object> GetAllPaginated(int page, int size);
+        IDictionary<string, Object> GetFiltered(int type, int page, int size);
     }
 }
