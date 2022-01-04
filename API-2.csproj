@@ -22,6 +22,9 @@
     <None Remove="Services\" />
     <None Remove="Migrations\" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="DTOs\" />
+    <None Remove="Payload\Request\" />
+    <None Remove="Payload\Response\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -48,5 +51,8 @@
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Payload\" />
+    <Folder Include="Payload\Request\" />
+    <Folder Include="Payload\Response\" />
   </ItemGroup>
 </Project>

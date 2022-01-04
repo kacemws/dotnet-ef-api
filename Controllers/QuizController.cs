@@ -231,8 +231,7 @@ namespace API_2
                 Dictionary<QuestionType, int> types = new Dictionary<QuestionType, int>();
 
                 types.Add(QuestionType.INPUT, 0);
-                types.Add(QuestionType.SINGLE, 1);
-                types.Add(QuestionType.MULTI, 2);
+                types.Add(QuestionType.CHECKBOX, 1);
 
                 return Ok(types);
             }
