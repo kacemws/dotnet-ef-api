@@ -8,5 +8,6 @@ namespace API_2
     public interface IQuestionService : ICRUDService<Question>
     {
         public IEnumerable<Question> GetQuestionsByQuiz(Guid id);
+        public void DeleteUnused(ICollection<Question> current, Guid id);
     }
 }

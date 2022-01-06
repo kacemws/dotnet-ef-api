@@ -37,7 +37,7 @@ namespace API_2
                 .HasMany(qst => qst.answers)
                 .WithOne(answ => answ.Question)
                 .HasForeignKey(answ => answ.questionId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
 
             /* Keys */
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_2
 {
@@ -15,7 +16,7 @@ namespace API_2
         {
             try
             {
-                var answers = dbSet.Where(ans => ans.questionId == id).ToList();
+                var answers = dbSet.AsNoTracking().Where(ans => ans.questionId == id).ToList();
                 return answers;
             }
             catch (Exception)
@@ -23,6 +24,11 @@ namespace API_2
                 return null;
             }
 
+        }
+        public Answer DetachEntity(Answer answer)
+        {
+            context.Entry(answer).State = EntityState.Detached;
+            return answer;
         }
     }
 }

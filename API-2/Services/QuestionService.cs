@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace API_2
 {
@@ -18,6 +18,33 @@ namespace API_2
         public IEnumerable<Question> GetQuestionsByQuiz(Guid id)
         {
             return _questionRepository.GetQuestionsByQuiz(id);
+        }
+
+        public void DeleteUnused(ICollection<Question> current, Guid id)
+        {
+            var old = GetQuestionsByQuiz(id).ToList();
+
+            foreach (Question question in old)
+            {
+                Console.WriteLine(old.Count);
+                Console.WriteLine(current.Count);
+                Question found = current.Where((qs) => qs.Id == question.Id).FirstOrDefault();
+
+                if (found == null)
+                {
+                    Console.WriteLine("not found");
+                    _questionRepository.DetachEntity(question);
+                    _questionRepository.Delete(question);
+                }
+                else
+                {
+                    Console.WriteLine("found");
+                    Console.WriteLine(found.Id);
+
+                    _questionRepository.DetachEntity(found);
+
+                }
+            }
         }
     }
 }

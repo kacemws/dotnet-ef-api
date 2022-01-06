@@ -81,7 +81,7 @@ namespace API_2
                 if (quiz == null) return NotFound();
 
                 // if found, but still in draft, only owner can access (hense, the password comparaison)
-                if(quiz.state == QuizState.DRAFT && quiz.password != password)
+                if(quiz.state != QuizState.PUBLISHED  && quiz.password != password)
                 {
                     return Unauthorized();
                 }
@@ -166,7 +166,7 @@ namespace API_2
         {
             try
             {
-                var quiz = _quizService.GetByID(id);
+                Quiz quiz = _quizService.GetByID(id);
 
                 if (quiz == null) return NotFound();
 
@@ -176,7 +176,34 @@ namespace API_2
                 // no update while published 
                 if (quiz.state != QuizState.DRAFT) throw new Exception("can't edit the quiz, it's already published");
 
+                // update question if not new
+                foreach (Question question in updatedQuiz.quizQuestions.questions)
+                {
+                    
+                    if (question?.Id != new Guid()) // equal to 00000000-0000-0000-0000-000000000000
+                    {
+                        //update answers content if not new
+                        foreach (Answer answer in question.answers)
+                        {
+                            if (answer?.Id != new Guid()) // equal to 00000000-0000-0000-0000-000000000000
+                            {
+                                _answerService.Update(answer);
+                            }
+                        }
+                        /*Testing delete*/
+                        _answerService.DeleteUnused(question.answers, question.Id);
+                        /*Testing delete*/
+
+                        _questionService.Update(question);
+                    }
+                }
+
+                /*Testing delete*/
+                _questionService.DeleteUnused(updatedQuiz.quizQuestions.questions, updatedQuiz.quizQuestions.Id);
+                /*Testing delete*/
+
                 _quizService.Update(updatedQuiz);
+
                 return Ok();
             }
             catch (Exception exception)
