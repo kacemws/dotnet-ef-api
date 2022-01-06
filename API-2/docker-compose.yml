@@ -8,12 +8,3 @@ services:
     environment:
       SA_PASSWORD: "1StrongPassword!"
       ACCEPT_EULA: "Y"
-  dotquiz.api:
-    image: ${DOCKER_REGISTRY-}dotnet
-    ports:
-      - 49838:443
-    build:
-      context: .
-      dockerfile: dockerfile
-    depends_on:
-      - sql-server-db
