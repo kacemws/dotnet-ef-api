@@ -81,7 +81,7 @@ namespace API_2
                 if (quiz == null) return NotFound();
 
                 // if found, but still in draft, only owner can access (hense, the password comparaison)
-                if(quiz.state != QuizState.PUBLISHED  && quiz.password != password)
+                if(quiz.state != QuizState.PUBLISHED  && !_quizService.VerifyPassword(password, quiz.password))
                 {
                     return Unauthorized();
                 }
@@ -124,7 +124,7 @@ namespace API_2
                 if (existing != null) throw new Exception("quiz with the same name already exists");
 
 
-                _quizService.Create(quiz);
+                _quizService.CreateQuiz(quiz);
                 return Created("",quiz);
             }
             catch (Exception exception)
@@ -144,7 +144,7 @@ namespace API_2
                 if (quiz == null) return NotFound();
 
                 // before deleting, we should check that's its an admin doing it
-                if (quiz.password != password) return Unauthorized();
+                if (!_quizService.VerifyPassword(password, quiz.password)) return Unauthorized();
 
                 // instead of deleting the entity, we would rather archive it, so that we can recover it at any given time
                 quiz.state = QuizState.ARCHIVED;
@@ -171,7 +171,11 @@ namespace API_2
                 if (quiz == null) return NotFound();
 
                 // check that an admin is doing the update
-                if (quiz.password != updatedQuiz.password) return Unauthorized();
+                
+                if (!_quizService.VerifyPassword(updatedQuiz.password, quiz.password)) return Unauthorized();
+
+                // hashed
+                updatedQuiz.password = quiz.password;
 
                 // no update while published 
                 if (quiz.state != QuizState.DRAFT) throw new Exception("can't edit the quiz, it's already published");

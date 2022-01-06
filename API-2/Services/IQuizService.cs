@@ -12,5 +12,8 @@ namespace API_2
 
         Quiz GetByName(string name);
         IDictionary<string, Object> GetFiltered(int type, int page, int size);
+
+        void CreateQuiz(Quiz quiz);
+        Boolean VerifyPassword(String clear, String hashed);
     }
 }

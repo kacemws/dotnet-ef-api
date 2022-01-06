@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BC = BCrypt.Net.BCrypt;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,6 +30,17 @@ namespace API_2
         public IDictionary<string, Object> GetFiltered(int type, int page, int size)
         {
             return _quizRepository.GetFiltered(type, page, size);
+        }
+
+        public void CreateQuiz(Quiz quiz)
+        {
+            quiz.password = BC.HashPassword(quiz?.password);
+            this.Create(quiz);
+        }
+
+        public Boolean VerifyPassword(String clear, String hashed)
+        {
+            return BC.Verify(clear, hashed);
         }
     }
 }
